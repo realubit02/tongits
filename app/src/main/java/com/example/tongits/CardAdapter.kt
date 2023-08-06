@@ -4,27 +4,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.recyclerview.widget.RecyclerView
-class CardAdapter(private val cards: List<Card>, private val onItemClick: (Card) -> Unit) : RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_main, parent, false)
-        return CardViewHolder(view)
+
+class CardAdapter(private val itemCount: Int) : RecyclerView.Adapter<CardAdapter.ViewHolder>() {
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageView: ImageView = itemView.findViewById(R.id.deck2)
     }
 
-    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        val card = cards[position]
-       // holder.imageView.setImageResource(card.imageResource)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_card_tongits, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val imageResId = R.drawable.back_of_deck // Replace with your actual image resource ID
+        holder.imageView.setImageResource(imageResId)
     }
 
     override fun getItemCount(): Int {
-        return cards.size
-    }
-
-    inner class CardViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-  //  val imageView: ImageView = view.findViewById(R.id.imageViewCard)
-
+        return itemCount
     }
 }

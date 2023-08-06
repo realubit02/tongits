@@ -3,20 +3,27 @@ package com.example.tongits
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tongits.R.layout.*
-
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.tongits.R.id.deck
+import com.example.tongits.R.layout.activity_main
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var decks: ImageView
+
+    private lateinit var recyclerView: RecyclerView
+    private val dataList = mutableListOf<Card>()
+    private val numberOfImageViews = 52
+    private val imageResource = R.drawable.back_of_deck
+
+    private lateinit var decks :ImageView
+    private lateinit var decks2 :ImageView
     private lateinit var p1card1: ImageView
     private lateinit var p1card2: ImageView
     private lateinit var p1card3: ImageView
@@ -73,17 +80,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var p4card12: ImageView
     private lateinit var p4card13: ImageView
 
-    private lateinit var cards: ArrayList<Int>
-    @SuppressLint("ResourceType")
+    private lateinit var cards: ArrayList<Card>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         setContentView(activity_main)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         //animation()
         //rotate ()
 
-        decks = findViewById(R.id.deck)
+        decks = findViewById(deck)
         p1card1 = findViewById(R.id.p1card1)
         p1card2 = findViewById(R.id.p1card2)
         p1card3 = findViewById(R.id.p1card3)
@@ -196,7 +202,7 @@ class MainActivity : AppCompatActivity() {
         p4card12.visibility = View.INVISIBLE
         p4card13.visibility = View.INVISIBLE
 
-        val deck = ArrayList<Int>()
+        val deck = arrayListOf<Int>()
 
         deck.add(101) // ace spades
         deck.add(102) // 2 of spades
@@ -255,13 +261,11 @@ class MainActivity : AppCompatActivity() {
         deck.add(413) // 13 of diamonds
 
         val distribute = findViewById<Button>(R.id.bounce)
-        distribute.setOnClickListener(){
-        rotate()
-        deck.shuffle()
-//            val animationBounce = AnimationUtils.loadAnimation(this, layout.rotate)
-//            decks.startAnimation(animationBounce)
-            //decks.visibility = INVISIBLE
 
+        distribute.setOnClickListener() {
+            cardsAnimation()
+
+            deck.shuffle()
 
             assignImage(deck[0], p1card1)
             assignImage(deck[1], p1card2)
@@ -276,8 +280,6 @@ class MainActivity : AppCompatActivity() {
             assignImage(deck[10], p1card11)
             assignImage(deck[11], p1card12)
             assignImage(deck[12], p1card13)
-            if(deck.contains(0)) {
-
 
             p1card1.visibility = View.VISIBLE
             p1card2.visibility = View.VISIBLE
@@ -292,355 +294,323 @@ class MainActivity : AppCompatActivity() {
             p1card11.visibility = View.VISIBLE
             p1card12.visibility = View.VISIBLE
             p1card13.visibility = View.VISIBLE
-        }
-        }
-//            assignImage(deck[13], p2card1)
-//            assignImage(deck[14], p2card2)
-//            assignImage(deck[15], p2card3)
-//            assignImage(deck[16], p2card4)
-//            assignImage(deck[17], p2card5)
-//            assignImage(deck[18], p2card6)
-//            assignImage(deck[19], p2card7)
-//            assignImage(deck[20], p2card8)
-//            assignImage(deck[21], p2card9)
-//            assignImage(deck[22], p2card10)
-//            assignImage(deck[23], p2card11)
-//            assignImage(deck[24], p2card12)
-//            assignImage(deck[25], p2card13)
-//
-//
-//            p2card1.visibility = View.VISIBLE
-//            p2card2.visibility = View.VISIBLE
-//            p2card3.visibility = View.VISIBLE
-//            p2card4.visibility = View.VISIBLE
-//            p2card5.visibility = View.VISIBLE
-//            p2card6.visibility = View.VISIBLE
-//            p2card7.visibility = View.VISIBLE
-//            p2card8.visibility = View.VISIBLE
-//            p2card9.visibility = View.VISIBLE
-//            p2card10.visibility = View.VISIBLE
-//            p2card11.visibility = View.VISIBLE
-//            p2card12.visibility = View.VISIBLE
-//            p2card13.visibility = View.VISIBLE
-//
-//            assignImage(deck[26], p3card1)
-//            assignImage(deck[27], p3card2)
-//            assignImage(deck[28], p3card3)
-//            assignImage(deck[29], p3card4)
-//            assignImage(deck[30], p3card5)
-//            assignImage(deck[31], p3card6)
-//            assignImage(deck[32], p3card7)
-//            assignImage(deck[33], p3card8)
-//            assignImage(deck[34], p3card9)
-//            assignImage(deck[35], p3card10)
-//            assignImage(deck[36], p3card11)
-//            assignImage(deck[37], p3card12)
-//            assignImage(deck[38], p3card13)
-//
-//            p3card1.visibility = View.VISIBLE
-//            p3card2.visibility = View.VISIBLE
-//            p3card3.visibility = View.VISIBLE
-//            p3card4.visibility = View.VISIBLE
-//            p3card5.visibility = View.VISIBLE
-//            p3card6.visibility = View.VISIBLE
-//            p3card7.visibility = View.VISIBLE
-//            p3card8.visibility = View.VISIBLE
-//            p3card9.visibility = View.VISIBLE
-//            p3card10.visibility = View.VISIBLE
-//            p3card11.visibility = View.VISIBLE
-//            p3card12.visibility = View.VISIBLE
-//            p3card13.visibility = View.VISIBLE
-//
-//
-//            assignImage(deck[39], p4card1)
-//            assignImage(deck[40], p4card2)
-//            assignImage(deck[41], p4card3)
-//            assignImage(deck[42], p4card4)
-//            assignImage(deck[43], p4card5)
-//            assignImage(deck[44], p4card6)
-//            assignImage(deck[45], p4card7)
-//            assignImage(deck[46], p4card8)
-//            assignImage(deck[47], p4card9)
-//            assignImage(deck[48], p4card10)
-//            assignImage(deck[49], p4card11)
-//            assignImage(deck[50], p4card12)
-//            assignImage(deck[51], p4card13)
-//
-//            p4card1.visibility = View.VISIBLE
-//            p4card2.visibility = View.VISIBLE
-//            p4card3.visibility = View.VISIBLE
-//            p4card4.visibility = View.VISIBLE
-//            p4card5.visibility = View.VISIBLE
-//            p4card6.visibility = View.VISIBLE
-//            p4card7.visibility = View.VISIBLE
-//            p4card8.visibility = View.VISIBLE
-//            p4card9.visibility = View.VISIBLE
-//            p4card10.visibility = View.VISIBLE
-//            p4card11.visibility = View.VISIBLE
-//            p4card12.visibility = View.VISIBLE
-//            p4card13.visibility = View.VISIBLE
-//
-//            decks.visibility = INVISIBLE
-//
-//
-//
-//
 
-        }
+            assignImage(deck[13], p2card1)
+            assignImage(deck[14], p2card2)
+            assignImage(deck[15], p2card3)
+            assignImage(deck[16], p2card4)
+            assignImage(deck[17], p2card5)
+            assignImage(deck[18], p2card6)
+            assignImage(deck[19], p2card7)
+            assignImage(deck[20], p2card8)
+            assignImage(deck[21], p2card9)
+            assignImage(deck[22], p2card10)
+            assignImage(deck[23], p2card11)
+            assignImage(deck[24], p2card12)
+            assignImage(deck[25], p2card13)
 
+            p2card1.visibility = View.VISIBLE
+            p2card2.visibility = View.VISIBLE
+            p2card3.visibility = View.VISIBLE
+            p2card4.visibility = View.VISIBLE
+            p2card5.visibility = View.VISIBLE
+            p2card6.visibility = View.VISIBLE
+            p2card7.visibility = View.VISIBLE
+            p2card8.visibility = View.VISIBLE
+            p2card9.visibility = View.VISIBLE
+            p2card10.visibility = View.VISIBLE
+            p2card11.visibility = View.VISIBLE
+            p2card12.visibility = View.VISIBLE
+            p2card13.visibility = View.VISIBLE
+
+            assignImage(deck[26], p3card1)
+            assignImage(deck[27], p3card2)
+            assignImage(deck[28], p3card3)
+            assignImage(deck[29], p3card4)
+            assignImage(deck[30], p3card5)
+            assignImage(deck[31], p3card6)
+            assignImage(deck[32], p3card7)
+            assignImage(deck[33], p3card8)
+            assignImage(deck[34], p3card9)
+            assignImage(deck[35], p3card10)
+            assignImage(deck[36], p3card11)
+            assignImage(deck[37], p3card12)
+            assignImage(deck[38], p3card13)
+
+            p3card1.visibility = View.VISIBLE
+            p3card2.visibility = View.VISIBLE
+            p3card3.visibility = View.VISIBLE
+            p3card4.visibility = View.VISIBLE
+            p3card5.visibility = View.VISIBLE
+            p3card6.visibility = View.VISIBLE
+            p3card7.visibility = View.VISIBLE
+            p3card8.visibility = View.VISIBLE
+            p3card9.visibility = View.VISIBLE
+            p3card10.visibility = View.VISIBLE
+            p3card11.visibility = View.VISIBLE
+            p3card12.visibility = View.VISIBLE
+            p3card13.visibility = View.VISIBLE
+
+            assignImage(deck[39], p4card1)
+            assignImage(deck[40], p4card2)
+            assignImage(deck[41], p4card3)
+            assignImage(deck[42], p4card4)
+            assignImage(deck[43], p4card5)
+            assignImage(deck[44], p4card6)
+            assignImage(deck[45], p4card7)
+            assignImage(deck[46], p4card8)
+            assignImage(deck[47], p4card9)
+            assignImage(deck[48], p4card10)
+            assignImage(deck[49], p4card11)
+            assignImage(deck[50], p4card12)
+            assignImage(deck[51], p4card13)
+
+            p4card1.visibility = View.VISIBLE
+            p4card2.visibility = View.VISIBLE
+            p4card3.visibility = View.VISIBLE
+            p4card4.visibility = View.VISIBLE
+            p4card5.visibility = View.VISIBLE
+            p4card6.visibility = View.VISIBLE
+            p4card7.visibility = View.VISIBLE
+            p4card8.visibility = View.VISIBLE
+            p4card9.visibility = View.VISIBLE
+            p4card10.visibility = View.VISIBLE
+            p4card11.visibility = View.VISIBLE
+            p4card12.visibility = View.VISIBLE
+            p4card13.visibility = View.VISIBLE
+        }
+    }
+    fun cardsAnimation() {
+//        val imageView: ImageView = RecyclerView(2,2,2,2)
+//        imageView.animate()
+//            .translationX(-450f)
+//            .translationY(200f)
+//            .start()
+        val recyclerView: RecyclerView = findViewById(R.id.deck)
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+
+        val itemCount = 52 // Specify the number of items you want in the RecyclerView
+
+        val adapter = CardAdapter(itemCount)
+        recyclerView.adapter = adapter
+    }
 
     fun assignImage (deck :Int, imageView: ImageView) {
         when (deck) {
             101 -> {
                 imageView.setImageResource(R.drawable.clubs_1)
             }
-
             102 -> {
                 imageView.setImageResource(R.drawable.clubs_2)
             }
-
             103 -> {
                 imageView.setImageResource(R.drawable.clubs_3)
             }
-
             104 -> {
                 imageView.setImageResource(R.drawable.clubs_4)
             }
-
             105 -> {
                 imageView.setImageResource(R.drawable.clubs_5)
             }
-
             106 -> {
                 imageView.setImageResource(R.drawable.clubs_6)
             }
-
             107 -> {
                 imageView.setImageResource(R.drawable.clubs_7)
             }
-
             108 -> {
                 imageView.setImageResource(R.drawable.clubs_8)
             }
-
             109 -> {
                 imageView.setImageResource(R.drawable.clubs_9)
             }
-
             110 -> {
                 imageView.setImageResource(R.drawable.clubs_10)
             }
-
             111 -> {
                 imageView.setImageResource(R.drawable.clubs_11)
             }
-
             112 -> {
                 imageView.setImageResource(R.drawable.clubs_12)
             }
-
             113 -> {
                 imageView.setImageResource(R.drawable.clubs_13)
             }
-
             201 -> {
                 imageView.setImageResource(R.drawable.hearts_1)
             }
-
             202 -> {
                 imageView.setImageResource(R.drawable.hearts_2)
             }
-
             203 -> {
                 imageView.setImageResource(R.drawable.hearts_3)
             }
-
             204 -> {
                 imageView.setImageResource(R.drawable.hearts_4)
             }
-
             205 -> {
                 imageView.setImageResource(R.drawable.hearts_5)
             }
-
             206 -> {
                 imageView.setImageResource(R.drawable.hearts_6)
             }
-
             207 -> {
                 imageView.setImageResource(R.drawable.hearts_7)
             }
-
             208 -> {
                 imageView.setImageResource(R.drawable.hearts_8)
             }
-
             209 -> {
                 imageView.setImageResource(R.drawable.hearts_9)
             }
-
             210 -> {
                 imageView.setImageResource(R.drawable.hearts_10)
             }
-
             211 -> {
                 imageView.setImageResource(R.drawable.hearts_11)
             }
-
             212 -> {
                 imageView.setImageResource(R.drawable.hearts_12)
             }
-
             213 -> {
                 imageView.setImageResource(R.drawable.hearts_13)
             }
-
-
             301 -> {
                 imageView.setImageResource(R.drawable.diamonds_1)
             }
-
             302 -> {
                 imageView.setImageResource(R.drawable.diamonds_2)
             }
-
             303 -> {
                 imageView.setImageResource(R.drawable.diamonds_3)
             }
-
             304 -> {
                 imageView.setImageResource(R.drawable.diamonds_4)
             }
-
             305 -> {
                 imageView.setImageResource(R.drawable.diamonds_5)
             }
-
             306 -> {
                 imageView.setImageResource(R.drawable.diamonds_6)
             }
-
             307 -> {
                 imageView.setImageResource(R.drawable.diamonds_7)
             }
-
             308 -> {
                 imageView.setImageResource(R.drawable.diamonds_8)
             }
-
             309 -> {
                 imageView.setImageResource(R.drawable.diamonds_9)
             }
-
             310 -> {
                 imageView.setImageResource(R.drawable.diamonds_10)
             }
-
             311 -> {
                 imageView.setImageResource(R.drawable.diamonds_11)
             }
-
             312 -> {
                 imageView.setImageResource(R.drawable.diamonds_12)
             }
-
             313 -> {
                 imageView.setImageResource(R.drawable.diamonds_13)
             }
-
-
             401 -> {
                 imageView.setImageResource(R.drawable.spades_1)
             }
-
             402 -> {
                 imageView.setImageResource(R.drawable.spades_2)
             }
-
             403 -> {
                 imageView.setImageResource(R.drawable.spades_3)
             }
-
             404 -> {
                 imageView.setImageResource(R.drawable.spades_4)
             }
-
             405 -> {
                 imageView.setImageResource(R.drawable.spades_5)
             }
-
             406 -> {
                 imageView.setImageResource(R.drawable.spades_6)
             }
-
             407 -> {
                 imageView.setImageResource(R.drawable.spades_7)
             }
-
             408 -> {
                 imageView.setImageResource(R.drawable.spades_8)
             }
-
             409 -> {
                 imageView.setImageResource(R.drawable.spades_9)
             }
-
             410 -> {
                 imageView.setImageResource(R.drawable.spades_10)
             }
-
             411 -> {
                 imageView.setImageResource(R.drawable.spades_11)
             }
-
             412 -> {
                 imageView.setImageResource(R.drawable.spades_12)
             }
-
             413 -> {
                 imageView.setImageResource(R.drawable.spades_13)
             }
-
         }
     }
-
-
-    @SuppressLint("ResourceType")
     fun rotate () {
+
+//          val animatedeck = findViewById<ImageView>(R.id.deckdistrib)
+//        dataList.add(Card(R.drawable.back_of_deck))
+
         decks.animate()
-
-            .rotationBy(360f)
+            .translationX(-450f)
+            .translationY(100f)
             .start()
-        val flipAnimation = AnimationUtils.loadAnimation(this, R.layout.rotate)
-
-        decks.startAnimation(flipAnimation)
-        flipView(decks)
-//        if (flipAnimation.hasEnded()) {
-//
-//
-//
-//        }
-//       decks.visibility= INVISIBLE
     }
+
     private fun flipView(view: View) {
         // Create two ObjectAnimators for rotationY, one for the front side, and one for the back side
-        val animator1 = ObjectAnimator.ofFloat(view, "rotationY", 0f, 90f)
-        val animator2 = ObjectAnimator.ofFloat(view, "rotationY", -90f, 0f)
-
+    val animator1 = ObjectAnimator.ofFloat(decks, "rotationY", 0f, 90f)
+    val animator2 = ObjectAnimator.ofFloat(view, "rotationY", -90f, 0f)
         // Set the duration of each animator (milliseconds)
         animator1.duration = 500
         animator2.duration = 500
-
         // Add a listener to change the visibility of the view when halfway through the animation
         animator1.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
-                view.visibility = View.INVISIBLE
-                animator2.start()
+                //view.visibility = View.INVISIBLE
+                    animator2.start()
+                    p1card1.visibility = View.VISIBLE
             }
         })
 
-        // Start the first animator
+        p1card1.visibility = View.INVISIBLE
         animator1.start()
     }
+    private fun startAnimationLoop(loopCount: Int, view: View) {
 
+        val animationDuration = 1000L // Duration of each animation in milliseconds
+        val loopCounter = 13
+
+        val animator1 = ObjectAnimator.ofFloat(decks,"translationY",0f,100f)
+        animator1.duration = animationDuration
+        val animator2 = ObjectAnimator.ofFloat(view, "rotationY", -90f, 0f)
+        animator1.duration = animationDuration
+    animator1.addUpdateListener { animation ->
+            val value = animation.animatedValue as Float
+            decks.alpha = value
+        }
+
+        animator1.addListener(object : AnimatorListenerAdapter() {
+
+
+            override fun onAnimationEnd(animation: Animator) {
+
+                if (loopCounter < loopCount) {
+                    animator1.start()
+                }
+            }
+        })
+
+    animator1.start()
+    }
 }
